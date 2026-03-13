@@ -1,10 +1,11 @@
 package org.teretana.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Trener {
 
-    private int id;
+    private Long id;
     private String ime;
     private String prezime;
     private String specijalizacija;
@@ -16,7 +17,7 @@ public class Trener {
     public Trener() {
     }
 
-    public Trener(int id, String ime, String prezime, String specijalizacija, String email, String telefon) {
+    public Trener(Long id, String ime, String prezime, String specijalizacija, String email, String telefon) {
         this.id = id;
         this.ime = ime;
         this.prezime = prezime;
@@ -25,11 +26,11 @@ public class Trener {
         this.telefon = telefon;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -79,5 +80,28 @@ public class Trener {
 
     public void setProgrami(List<ProgramTreninga> programi) {
         this.programi = programi;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Trener trener = (Trener) o;
+        return Objects.equals(id, trener.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+    return "Trener{" +
+            "id=" + id +
+            ", ime='" + ime + '\'' +
+            ", prezime='" + prezime + '\'' +
+            ", specijalizacija='" + specijalizacija + '\'' +
+            '}';
     }
 }

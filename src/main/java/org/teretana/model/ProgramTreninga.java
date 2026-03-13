@@ -1,23 +1,24 @@
 package org.teretana.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ProgramTreninga {
 
-    private int id;
+    private Long id;
     private String naziv;
     private String opis;
     private String nivoTezine;
     private int trajanjeUMinutama;
 
-    private Trener trener;
+    private List<Trener> treneri;
     private List<Termin> termini;
     private List<Clan> clanovi;
 
     public ProgramTreninga() {
     }
 
-    public ProgramTreninga(int id, String naziv, String opis, String nivoTezine, int trajanjeUMinutama) {
+    public ProgramTreninga(Long id, String naziv, String opis, String nivoTezine, int trajanjeUMinutama) {
         this.id = id;
         this.naziv = naziv;
         this.opis = opis;
@@ -25,11 +26,11 @@ public class ProgramTreninga {
         this.trajanjeUMinutama = trajanjeUMinutama;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -65,12 +66,12 @@ public class ProgramTreninga {
         this.trajanjeUMinutama = trajanjeUMinutama;
     }
 
-    public Trener getTrener() {
-        return trener;
+    public List<Trener> getTreneri() {
+        return treneri;
     }
 
-    public void setTrener(Trener trener) {
-        this.trener = trener;
+    public void setTreneri(List<Trener> treneri) {
+        this.treneri = treneri;
     }
 
     public List<Termin> getTermini() {
@@ -87,5 +88,28 @@ public class ProgramTreninga {
 
     public void setClanovi(List<Clan> clanovi) {
         this.clanovi = clanovi;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProgramTreninga that = (ProgramTreninga) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+    return "ProgramTreninga{" +
+            "id=" + id +
+            ", naziv='" + naziv + '\'' +
+            ", nivoTezine='" + nivoTezine + '\'' +
+            ", trajanjeUMinutama=" + trajanjeUMinutama +
+            '}';
     }
 }

@@ -1,8 +1,10 @@
 package org.teretana.model;
 
+import java.util.Objects;
+
 public class Termin {
 
-    private int id;
+    private Long id;
     private String datum;
     private String vrijeme;
     private String sala;
@@ -12,18 +14,18 @@ public class Termin {
     public Termin() {
     }
 
-    public Termin(int id, String datum, String vrijeme, String sala) {
+    public Termin(Long id, String datum, String vrijeme, String sala) {
         this.id = id;
         this.datum = datum;
         this.vrijeme = vrijeme;
         this.sala = sala;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -57,5 +59,18 @@ public class Termin {
 
     public void setProgramTreninga(ProgramTreninga programTreninga) {
         this.programTreninga = programTreninga;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Termin termin = (Termin) o;
+        return Objects.equals(id, termin.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

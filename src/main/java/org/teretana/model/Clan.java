@@ -1,36 +1,39 @@
 package org.teretana.model;
 
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
+import java.util.List;
+import java.util.Objects;
+
+@Entity
 public class Clan {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String ime;
     private String prezime;
-    private String email;
     private String telefon;
+    private String email;
     private String datumUclanjenja;
 
-    private List<Clanarina> clanarine;
-    private List<ProgramTreninga> programi;
+    // akomentarisano dok ne napravimo relacije
+    // private Kartica kartica;
+    // private List<Clanarina> clanarine;
+    // private List<ProgramTreninga> programi;
 
     public Clan() {
     }
 
-    public Clan(int id, String ime, String prezime, String email, String telefon, String datumUclanjenja) {
-        this.id = id;
-        this.ime = ime;
-        this.prezime = prezime;
-        this.email = email;
-        this.telefon = telefon;
-        this.datumUclanjenja = datumUclanjenja;
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -50,14 +53,6 @@ public class Clan {
         this.prezime = prezime;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getTelefon() {
         return telefon;
     }
@@ -66,12 +61,29 @@ public class Clan {
         this.telefon = telefon;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getDatumUclanjenja() {
         return datumUclanjenja;
     }
 
     public void setDatumUclanjenja(String datumUclanjenja) {
         this.datumUclanjenja = datumUclanjenja;
+    }
+
+    /*
+    public Kartica getKartica() {
+        return kartica;
+    }
+
+    public void setKartica(Kartica kartica) {
+        this.kartica = kartica;
     }
 
     public List<Clanarina> getClanarine() {
@@ -88,5 +100,29 @@ public class Clan {
 
     public void setProgrami(List<ProgramTreninga> programi) {
         this.programi = programi;
+    }
+    */
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Clan clan = (Clan) o;
+        return Objects.equals(id, clan.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Clan{" +
+                "id=" + id +
+                ", ime='" + ime + '\'' +
+                ", prezime='" + prezime + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

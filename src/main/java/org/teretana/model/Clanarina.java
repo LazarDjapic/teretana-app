@@ -1,8 +1,10 @@
 package org.teretana.model;
 
+import java.util.Objects;
+
 public class Clanarina {
 
-    private int id;
+    private Long id;
     private double iznos;
     private String datumUplate;
     private String datumIsteka;
@@ -13,7 +15,7 @@ public class Clanarina {
     public Clanarina() {
     }
 
-    public Clanarina(int id, double iznos, String datumUplate, String datumIsteka, String tipClanarine) {
+    public Clanarina(Long id, double iznos, String datumUplate, String datumIsteka, String tipClanarine) {
         this.id = id;
         this.iznos = iznos;
         this.datumUplate = datumUplate;
@@ -21,11 +23,11 @@ public class Clanarina {
         this.tipClanarine = tipClanarine;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -67,5 +69,18 @@ public class Clanarina {
 
     public void setClan(Clan clan) {
         this.clan = clan;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Clanarina that = (Clanarina) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
