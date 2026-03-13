@@ -3,17 +3,29 @@ package org.teretana.model;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class ProgramTreninga {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String naziv;
     private String opis;
     private String nivoTezine;
     private int trajanjeUMinutama;
 
+    //zakomentarisano dok ne dodjemo do relacija
+    /* 
     private List<Trener> treneri;
     private List<Termin> termini;
     private List<Clan> clanovi;
+    */
 
     public ProgramTreninga() {
     }
@@ -66,6 +78,7 @@ public class ProgramTreninga {
         this.trajanjeUMinutama = trajanjeUMinutama;
     }
 
+    /* 
     public List<Trener> getTreneri() {
         return treneri;
     }
@@ -89,6 +102,7 @@ public class ProgramTreninga {
     public void setClanovi(List<Clan> clanovi) {
         this.clanovi = clanovi;
     }
+    */
 
     @Override
     public boolean equals(Object o) {
