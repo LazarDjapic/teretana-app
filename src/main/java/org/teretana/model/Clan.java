@@ -4,12 +4,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.NamedQuery;
 
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@NamedQuery(
+        name = Clan.GET_ALL_CLANOVI,
+        query = "SELECT c FROM Clan c"
+)
 public class Clan {
+
+    public static final String GET_ALL_CLANOVI = "Clan.getAll";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +28,7 @@ public class Clan {
     private String email;
     private String datumUclanjenja;
 
-    // akomentarisano dok ne napravimo relacije
+    // zakomentarisano dok ne radimo relacije
     // private Kartica kartica;
     // private List<Clanarina> clanarine;
     // private List<ProgramTreninga> programi;
@@ -76,32 +83,6 @@ public class Clan {
     public void setDatumUclanjenja(String datumUclanjenja) {
         this.datumUclanjenja = datumUclanjenja;
     }
-
-    /*
-    public Kartica getKartica() {
-        return kartica;
-    }
-
-    public void setKartica(Kartica kartica) {
-        this.kartica = kartica;
-    }
-
-    public List<Clanarina> getClanarine() {
-        return clanarine;
-    }
-
-    public void setClanarine(List<Clanarina> clanarine) {
-        this.clanarine = clanarine;
-    }
-
-    public List<ProgramTreninga> getProgrami() {
-        return programi;
-    }
-
-    public void setProgrami(List<ProgramTreninga> programi) {
-        this.programi = programi;
-    }
-    */
 
     @Override
     public boolean equals(Object o) {
