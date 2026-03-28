@@ -34,12 +34,12 @@ public class Clan {
         this.prezime = prezime;
     }
 
-    // Prvi @OneToOne relacija (Uslov 1 iz domacega)
+    // Prvi @OneToOne relacija 
     @OneToOne(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Kartica kartica;
 
-    // @OneToMany relacija (Uslov 2 iz domacega - FetchType.LAZY)
+    // @OneToMany relacija (FetchType.LAZY)
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "clan_id")
     private List<Clanarina> clanarine = new ArrayList<>();

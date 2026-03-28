@@ -25,7 +25,7 @@ public class Trener {
     private String email;
     private String telefon;
 
-    // Druga @OneToMany relacija (Uslov 2 iz domacega - FetchType.LAZY)
+    // Druga @OneToMany relacija (FetchType.LAZY)
     @OneToMany(mappedBy = "trener", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<ProgramTreninga> programi = new ArrayList<>();

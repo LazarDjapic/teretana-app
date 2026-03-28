@@ -16,12 +16,12 @@ public class Termin {
     private String datum;
     private String vrijeme;
 
-    // Druga @OneToOne relacija (Vlasnik veze - Uslov 1 iz domacega)
+    // Druga @OneToOne relacija
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sala_id")
     private Sala sala;
 
-    // @ManyToOne relacija (Uslov 2 iz domacega - FetchType.LAZY)
+    // @ManyToOne relacija (FetchType.LAZY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id")
     private ProgramTreninga programTreninga;

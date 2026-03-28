@@ -16,7 +16,7 @@ public class Sala {
 
     private String naziv;
 
-    // Druga @OneToOne relacija (Uslov 1 iz domacega)
+    // Druga @OneToOne relacija 
     @OneToOne(mappedBy = "sala", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Termin termin;

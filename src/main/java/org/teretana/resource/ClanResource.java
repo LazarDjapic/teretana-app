@@ -42,7 +42,7 @@ public class ClanResource {
     return Response.ok().entity(clanovi).build();
   }
 
-  // Tačka 3 domaćeg: Pretraga entiteta koristeći @QueryParam
+  //Pretraga entiteta koristeći @QueryParam
   @GET
   @Path("/getClanByIme")
   @Produces(MediaType.APPLICATION_JSON)
@@ -51,7 +51,7 @@ public class ClanResource {
       return Response.ok().entity(clanovi).build();
   }
 
-  // Tačka 5 domaćeg: Endpoint koji vraća kolekciju (članarine) za ID člana
+  //Endpoint koji vraća kolekciju (članarine) za ID člana
   @GET
   @Path("/getClanarineByClanId")
   @Produces(MediaType.APPLICATION_JSON)

@@ -28,7 +28,7 @@ public class ClanService {
         throw new ClanException("Prezime je prazno");
       }
 
-      // Tačka 4 domaćeg: Povezivanje kolekcije članarina sa članom prije čuvanja
+      //Povezivanje kolekcije članarina sa članom prije čuvanja
       if (clan.getClanarine() != null) {
           for (Clanarina c : clan.getClanarine()) {
               c.setClan(clan);
@@ -60,7 +60,7 @@ public class ClanService {
   }
 
   public List<Clanarina> getClanarineByClanId(Long id) {
-    // Tačka 5 domaćeg: Korišćenje NamedQuery-ja za dobavljanje kolekcije po ID-u entiteta
+    //Korišćenje NamedQuery-ja za dobavljanje kolekcije po ID-u entiteta
     return em.createNamedQuery(Clanarina.GET_ALL_CLANARINE_FOR_CLAN_ID, Clanarina.class)
              .setParameter("id", id)
              .getResultList();

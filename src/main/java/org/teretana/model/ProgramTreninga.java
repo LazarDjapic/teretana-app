@@ -21,7 +21,7 @@ public class ProgramTreninga {
     private String nivoTezine;
     private int trajanjeUMinutama;
 
-    // Druga @ManyToOne relacija (Uslov 2 iz domacega - FetchType.LAZY)
+    // Druga @ManyToOne relacija (FetchType.LAZY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trener_id")
     private Trener trener;
