@@ -1,24 +1,32 @@
 package org.teretana.model;
-
+import jakarta.persistence.*;
 import java.util.Objects;
 
+@Entity
+@NamedQuery(name = Termin.GET_TERMINI_BY_PROGRAM, query = "Select t from Termin t where t.programTreninga.id = :id")
 public class Termin {
 
+    public static final String GET_TERMINI_BY_PROGRAM = "GetTerminiByProgram";
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "termin_seq")
+    @SequenceGenerator(name = "termin_seq", sequenceName = "termin_seq", allocationSize = 1)
     private Long id;
+
     private String datum;
     private String vrijeme;
-    private String sala;
 
+    // Druga @OneToOne relacija (Vlasnik veze - Uslov 1 iz domacega)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sala_id")
+    private Sala sala;
+
+    // @ManyToOne relacija (Uslov 2 iz domacega - FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "program_id")
     private ProgramTreninga programTreninga;
 
     public Termin() {
-    }
-
-    public Termin(Long id, String datum, String vrijeme, String sala) {
-        this.id = id;
-        this.datum = datum;
-        this.vrijeme = vrijeme;
-        this.sala = sala;
     }
 
     public Long getId() {
@@ -45,11 +53,11 @@ public class Termin {
         this.vrijeme = vrijeme;
     }
 
-    public String getSala() {
+    public Sala getSala() {
         return sala;
     }
 
-    public void setSala(String sala) {
+    public void setSala(Sala sala) {
         this.sala = sala;
     }
 
@@ -63,14 +71,21 @@ public class Termin {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Termin termin = (Termin) o;
-        return Objects.equals(id, termin.id);
+        if (!(o instanceof Termin termin)) return false;
+        return Objects.equals(id, termin.id) && Objects.equals(datum, termin.datum);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, datum);
+    }
+
+    @Override
+    public String toString() {
+        return "Termin{" +
+                "id=" + id +
+                ", datum='" + datum + '\'' +
+                ", vrijeme='" + vrijeme + '\'' +
+                '}';
     }
 }

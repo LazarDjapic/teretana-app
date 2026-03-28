@@ -1,18 +1,19 @@
 package org.teretana.model;
-
+import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@NamedQuery(name = ProgramTreninga.GET_ALL_PROGRAMI, query = "Select p.id, p.naziv from ProgramTreninga p")
 public class ProgramTreninga {
 
+    public static final String GET_ALL_PROGRAMI = "GetAllProgrami";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "program_seq")
+    @SequenceGenerator(name = "program_seq", sequenceName = "program_seq", allocationSize = 1)
     private Long id;
 
     private String naziv;
@@ -20,22 +21,17 @@ public class ProgramTreninga {
     private String nivoTezine;
     private int trajanjeUMinutama;
 
-    //zakomentarisano dok ne dodjemo do relacija
-    /* 
-    private List<Trener> treneri;
-    private List<Termin> termini;
-    private List<Clan> clanovi;
-    */
+    // Druga @ManyToOne relacija (Uslov 2 iz domacega - FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trener_id")
+    private Trener trener;
+
+    // Relacija ka terminima (Kolekcija - FetchType.LAZY)
+    @OneToMany(mappedBy = "programTreninga", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Termin> termini = new ArrayList<>();
 
     public ProgramTreninga() {
-    }
-
-    public ProgramTreninga(Long id, String naziv, String opis, String nivoTezine, int trajanjeUMinutama) {
-        this.id = id;
-        this.naziv = naziv;
-        this.opis = opis;
-        this.nivoTezine = nivoTezine;
-        this.trajanjeUMinutama = trajanjeUMinutama;
     }
 
     public Long getId() {
@@ -78,13 +74,12 @@ public class ProgramTreninga {
         this.trajanjeUMinutama = trajanjeUMinutama;
     }
 
-    /* 
-    public List<Trener> getTreneri() {
-        return treneri;
+    public Trener getTrener() {
+        return trener;
     }
 
-    public void setTreneri(List<Trener> treneri) {
-        this.treneri = treneri;
+    public void setTrener(Trener trener) {
+        this.trener = trener;
     }
 
     public List<Termin> getTermini() {
@@ -95,35 +90,22 @@ public class ProgramTreninga {
         this.termini = termini;
     }
 
-    public List<Clan> getClanovi() {
-        return clanovi;
-    }
-
-    public void setClanovi(List<Clan> clanovi) {
-        this.clanovi = clanovi;
-    }
-    */
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProgramTreninga that = (ProgramTreninga) o;
-        return Objects.equals(id, that.id);
+        if (!(o instanceof ProgramTreninga p)) return false;
+        return Objects.equals(id, p.id) && Objects.equals(naziv, p.naziv);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, naziv);
     }
 
     @Override
     public String toString() {
-    return "ProgramTreninga{" +
-            "id=" + id +
-            ", naziv='" + naziv + '\'' +
-            ", nivoTezine='" + nivoTezine + '\'' +
-            ", trajanjeUMinutama=" + trajanjeUMinutama +
-            '}';
+        return "ProgramTreninga{" +
+                "id=" + id +
+                ", naziv='" + naziv + '\'' +
+                '}';
     }
 }

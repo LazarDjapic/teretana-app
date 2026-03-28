@@ -1,26 +1,31 @@
 package org.teretana.model;
-
+import jakarta.persistence.*;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+@NamedQuery(name = Clanarina.GET_ALL_CLANARINE_FOR_CLAN_ID, query = "Select c from Clanarina c where c.clan.id = :id")
 public class Clanarina {
 
+    public static final String GET_ALL_CLANARINE_FOR_CLAN_ID = "GetAllClanarineForClanId";
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clanarina_seq")
+    @SequenceGenerator(name = "clanarina_seq", sequenceName = "clanarina_seq", allocationSize = 1)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clan_id")
+    @JsonIgnore
+    private Clan clan;
+
     private double iznos;
     private String datumUplate;
     private String datumIsteka;
     private String tipClanarine;
 
-    private Clan clan;
-
     public Clanarina() {
-    }
-
-    public Clanarina(Long id, double iznos, String datumUplate, String datumIsteka, String tipClanarine) {
-        this.id = id;
-        this.iznos = iznos;
-        this.datumUplate = datumUplate;
-        this.datumIsteka = datumIsteka;
-        this.tipClanarine = tipClanarine;
     }
 
     public Long getId() {
@@ -29,6 +34,14 @@ public class Clanarina {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Clan getClan() {
+        return clan;
+    }
+
+    public void setClan(Clan clan) {
+        this.clan = clan;
     }
 
     public double getIznos() {
@@ -63,24 +76,23 @@ public class Clanarina {
         this.tipClanarine = tipClanarine;
     }
 
-    public Clan getClan() {
-        return clan;
-    }
-
-    public void setClan(Clan clan) {
-        this.clan = clan;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Clanarina that = (Clanarina) o;
-        return Objects.equals(id, that.id);
+        if (!(o instanceof Clanarina clanarina)) return false;
+        return Objects.equals(id, clanarina.id) && Double.compare(iznos, clanarina.iznos) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, iznos);
+    }
+
+    @Override
+    public String toString() {
+        return "Clanarina{" +
+                "id=" + id +
+                ", iznos=" + iznos +
+                ", tip='" + tipClanarine + '\'' +
+                '}';
     }
 }
