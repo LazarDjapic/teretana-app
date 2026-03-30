@@ -5,6 +5,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.teretana.exception.ClanException;
+import org.teretana.model.Termin;
 import org.teretana.model.Trener;
 import org.teretana.service.TrenerService;
 
@@ -39,5 +40,17 @@ public class TrenerResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTermini(@QueryParam("id") Long id) {
         return Response.ok().entity(trenerService.getTerminiByProgramId(id)).build();
+    }
+
+    @POST
+    @Path("/addTermin")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addTermin(Termin termin) {
+        try {
+            trenerService.createTermin(termin);
+            return Response.ok().build();
+        } catch (ClanException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
     }
 }

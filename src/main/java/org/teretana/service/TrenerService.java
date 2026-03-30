@@ -37,9 +37,17 @@ public class TrenerService {
     }
 
     public List<Termin> getTerminiByProgramId(Long id) {
-        // Dobavljanje kolekcije termina za program (Tacka 5 domaceg)
+        // Dobavljanje kolekcije termina za program 
         return em.createNamedQuery(Termin.GET_TERMINI_BY_PROGRAM, Termin.class)
                  .setParameter("id", id)
                  .getResultList();
+    }
+
+     @Transactional
+    public Termin createTermin(Termin termin) throws ClanException {
+        if (termin == null) {
+            throw new ClanException("Termin nije proslijeđen");
+        }
+        return em.merge(termin);
     }
 }
