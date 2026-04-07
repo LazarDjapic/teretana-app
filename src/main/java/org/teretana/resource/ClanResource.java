@@ -1,5 +1,6 @@
 package org.teretana.resource;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -12,6 +13,7 @@ import org.teretana.service.ClanService;
 import java.util.List;
 
 @Path("/clan")
+@RolesAllowed("admin")
 public class ClanResource {
 
     @Inject

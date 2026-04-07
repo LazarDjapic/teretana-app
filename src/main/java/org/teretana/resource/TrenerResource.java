@@ -1,5 +1,6 @@
 package org.teretana.resource;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -10,6 +11,7 @@ import org.teretana.model.Trener;
 import org.teretana.service.TrenerService;
 
 @Path("/trener")
+@RolesAllowed("admin")
 public class TrenerResource {
 
     @Inject
