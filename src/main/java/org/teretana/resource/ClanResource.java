@@ -10,6 +10,12 @@ import org.teretana.model.Clan;
 import org.teretana.model.Clanarina;
 import org.teretana.service.ClanService;
 
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.teretana.rest.client.IpClient;
+import org.teretana.rest.client.TimeZoneClient;
+import org.teretana.model.TimeZoneLog;
+import org.teretana.model.TimeZoneResponse;
+
 import java.util.List;
 
 @Path("/clan")
@@ -62,4 +68,41 @@ public class ClanResource {
 
     return Response.ok().entity(clanarine).build();
   }
+
+
+  @Inject
+    @RestClient
+    IpClient ipClient;
+
+    @Inject
+    @RestClient
+    TimeZoneClient timeZoneClient;
+
+    @GET
+    @Path("/getTimezoneByIP")
+    @Produces(MediaType.APPLICATION_JSON)
+public Response getTimezoneByIP(@QueryParam("userId") Long userId) {
+    try {
+        Clan clan = clanService.findById(userId);
+        if (clan == null) {
+            throw new ClanException("Korisnik sa ID " + userId + " nije pronađen!");
+        }
+
+        String mojIp = "85.94.121.233"; 
+        TimeZoneResponse apiOdgovor = timeZoneClient.getTimeByIp(mojIp);
+        
+        TimeZoneLog noviLog = new TimeZoneLog(mojIp, apiOdgovor.getTimeZone(), apiOdgovor.getDateTime(), clan);
+        
+        clan.getTimeLogs().add(noviLog);
+        clanService.updateClan(clan);
+
+        return Response.ok().entity(clan).build();
+
+    } catch (ClanException e) {
+        return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+    } catch (Exception e) {
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Greška: " + e.getMessage()).build();
+    }
+}
+
 }

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.teretana.model.TimeZoneLog;
+
 
 @Entity
 @NamedQuery(name = Clan.GET_ALL_CLANOVI, query = "Select c.id, c.ime, c.prezime from Clan c")
@@ -43,6 +45,11 @@ public class Clan {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "clan_id")
     private List<Clanarina> clanarine = new ArrayList<>();
+
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TimeZoneLog> timeLogs = new ArrayList<>();
+
+
 
     public Long getId() {
         return id;
@@ -106,6 +113,14 @@ public class Clan {
 
     public void setClanarine(List<Clanarina> clanarine) {
         this.clanarine = clanarine;
+    }
+
+    public List<TimeZoneLog> getTimeLogs() {
+        return timeLogs;
+    }
+
+    public void setTimeLogs(List<TimeZoneLog> timeLogs) {
+        this.timeLogs = timeLogs;
     }
 
     @Override

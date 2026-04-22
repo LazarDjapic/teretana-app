@@ -53,6 +53,15 @@ public class ClanService {
     return clanovi;
   }
 
+  public Clan findById(Long id) {
+    return em.find(Clan.class, id);
+}
+
+  @Transactional
+  public void updateClan(Clan clan) {
+      em.merge(clan);
+  }
+
   public List<Clan> getClanByIme(String name) {
     return em.createNamedQuery(Clan.GET_CLAN_BY_IME, Clan.class)
              .setParameter("imeC", name)
