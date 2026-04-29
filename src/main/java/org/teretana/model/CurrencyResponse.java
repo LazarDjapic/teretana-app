@@ -2,7 +2,6 @@ package org.teretana.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.util.Objects;
 
@@ -15,11 +14,11 @@ public class CurrencyResponse {
     @SequenceGenerator(name = "currency_seq", sequenceName = "currency_seq", allocationSize = 1)
     private Long id;
 
-    @JsonProperty("from")
-    private String fromCurrency;
+    @Column(name = "from_currency")
+    private String from;
 
-    @JsonProperty("to")
-    private String toCurrency;
+    @Column(name = "to_currency")
+    private String to;
     private double rate;
     private double value;
     private double convertedValue;
@@ -32,9 +31,9 @@ public class CurrencyResponse {
     public CurrencyResponse() {
     }
 
-    public CurrencyResponse(String fromCurrency, String toCurrency, double rate, double value, double convertedValue, Clan clan) {
-        this.fromCurrency = fromCurrency;
-        this.toCurrency = toCurrency;
+    public CurrencyResponse(String from, String to, double rate, double value, double convertedValue, Clan clan) {
+        this.from = from;
+        this.to = to;
         this.rate = rate;
         this.value = value;
         this.convertedValue = convertedValue;
@@ -49,20 +48,20 @@ public class CurrencyResponse {
         this.id = id;
     }
 
-    public String getFromCurrency() {
-        return fromCurrency;
+    public String getFrom() {
+        return from;
     }
 
-    public void setFromCurrency(String fromCurrency) {
-        this.fromCurrency = fromCurrency;
+    public void setFrom(String from) {
+        this.from = from;
     }
 
-    public String getToCurrency() {
-        return toCurrency;
+    public String getTo() {
+        return to;
     }
 
-    public void setToCurrency(String toCurrency) {
-        this.toCurrency = toCurrency;
+    public void setTo(String to) {
+        this.to = to;
     }
 
     public double getRate() {
