@@ -8,6 +8,7 @@ import java.util.Objects;
 import org.teretana.model.TimeZoneLog;
 
 
+
 @Entity
 @NamedQuery(name = Clan.GET_ALL_CLANOVI, query = "Select c.id, c.ime, c.prezime from Clan c")
 @NamedQuery(name = Clan.GET_CLAN_BY_IME, query = "Select c from Clan c where c.ime = :imeC")
@@ -49,6 +50,10 @@ public class Clan {
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TimeZoneLog> timeLogs = new ArrayList<>();
 
+    @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CurrencyResponse> currencyResponses = new ArrayList<>();
+
+    
 
 
     public Long getId() {
@@ -121,6 +126,14 @@ public class Clan {
 
     public void setTimeLogs(List<TimeZoneLog> timeLogs) {
         this.timeLogs = timeLogs;
+    }
+
+    public List<CurrencyResponse> getCurrencyResponses() {
+        return currencyResponses;
+    }
+
+    public void setCurrencyResponses(List<CurrencyResponse> currencyResponses) {
+        this.currencyResponses = currencyResponses;
     }
 
     @Override

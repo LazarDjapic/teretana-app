@@ -70,7 +70,7 @@ public class ClanResource {
   }
 
 
-  @Inject
+    @Inject
     @RestClient
     IpClient ipClient;
 
@@ -81,7 +81,7 @@ public class ClanResource {
     @GET
     @Path("/getTimezoneByIP")
     @Produces(MediaType.APPLICATION_JSON)
-public Response getTimezoneByIP(@QueryParam("userId") Long userId) {
+    public Response getTimezoneByIP(@QueryParam("userId") Long userId) {
     try {
         Clan clan = clanService.findById(userId);
         if (clan == null) {
@@ -103,6 +103,8 @@ public Response getTimezoneByIP(@QueryParam("userId") Long userId) {
     } catch (Exception e) {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Greška: " + e.getMessage()).build();
     }
-}
+  }
+
+  
 
 }

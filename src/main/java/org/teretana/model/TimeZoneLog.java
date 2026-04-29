@@ -21,7 +21,7 @@ public class TimeZoneLog {
     @JsonIgnore
     private Clan clan;
 
-   
+    
     public TimeZoneLog() {
     }
 

@@ -55,7 +55,7 @@ public class ClanService {
 
   public Clan findById(Long id) {
     return em.find(Clan.class, id);
-}
+  }
 
   @Transactional
   public void updateClan(Clan clan) {
