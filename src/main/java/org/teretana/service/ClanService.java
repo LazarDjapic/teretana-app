@@ -7,14 +7,26 @@ import jakarta.transaction.Transactional;
 import org.teretana.exception.ClanException;
 import org.teretana.model.Clan;
 import org.teretana.model.Clanarina;
+import org.teretana.model.UploadedFile;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Dependent
 public class ClanService {
 
   @Inject
   private EntityManager em;
+
+  public record ClanFileUploadResult(UploadedFile uploadedFile, boolean alreadyExisted) {
+  }
 
   @Transactional
   public Clan createClan(Clan clan) throws ClanException {
@@ -60,6 +72,67 @@ public class ClanService {
   @Transactional
   public void updateClan(Clan clan) {
       em.merge(clan);
+  }
+
+  @Transactional
+  public ClanFileUploadResult uploadFileForClan(Long clanId, String filename, FileUpload fileUpload) throws ClanException, IOException {
+      if (clanId == null) {
+        throw new ClanException("ID clana nije proslijedjen");
+      }
+      if (fileUpload == null || fileUpload.uploadedFile() == null) {
+        throw new ClanException("Fajl nije proslijedjen");
+      }
+
+      Clan clan = findById(clanId);
+      if (clan == null) {
+        throw new ClanException("Clan sa ID " + clanId + " nije pronadjen");
+      }
+
+      String requestedFilename = filename;
+      if (requestedFilename == null || requestedFilename.isBlank()) {
+        requestedFilename = fileUpload.fileName();
+      }
+      if (requestedFilename == null || requestedFilename.isBlank()) {
+        throw new ClanException("Ime fajla nije proslijedjeno");
+      }
+
+      String cleanFilename = Paths.get(requestedFilename).getFileName().toString();
+      Path uploadDir = Paths.get("uploads", "clanovi").toAbsolutePath().normalize();
+      Files.createDirectories(uploadDir);
+
+      Path targetPath = uploadDir.resolve(cleanFilename).normalize();
+      if (!targetPath.startsWith(uploadDir)) {
+        throw new ClanException("Ime fajla nije validno");
+      }
+
+      boolean fileAlreadyExisted = Files.exists(targetPath);
+      if (!fileAlreadyExisted) {
+        Files.copy(fileUpload.uploadedFile(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+      }
+
+      String storedPath = targetPath.toString();
+      Optional<UploadedFile> existingUploadedFile = em
+              .createQuery("select u from UploadedFile u where u.filename = :filename", UploadedFile.class)
+              .setParameter("filename", storedPath)
+              .getResultStream()
+              .findFirst();
+
+      UploadedFile uploadedFile = existingUploadedFile.orElseGet(() -> {
+        UploadedFile newUploadedFile = new UploadedFile(storedPath, targetPath.toFile());
+        em.persist(newUploadedFile);
+        return newUploadedFile;
+      });
+      uploadedFile.setFile(targetPath.toFile());
+
+      if (clan.getUploadedFiles() == null) {
+        clan.setUploadedFiles(new ArrayList<>());
+      }
+      if (!clan.getUploadedFiles().contains(uploadedFile)) {
+        clan.getUploadedFiles().add(uploadedFile);
+      }
+
+      em.merge(clan);
+      return new ClanFileUploadResult(uploadedFile, fileAlreadyExisted || existingUploadedFile.isPresent());
   }
 
   public List<Clan> getClanByIme(String name) {

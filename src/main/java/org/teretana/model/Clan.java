@@ -53,7 +53,13 @@ public class Clan {
     @OneToMany(mappedBy = "clan", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CurrencyResponse> currencyResponses = new ArrayList<>();
 
-    
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "clan_uploaded_file",
+            joinColumns = @JoinColumn(name = "clan_id"),
+            inverseJoinColumns = @JoinColumn(name = "uploaded_file_id")
+    )
+    private List<UploadedFile> uploadedFiles = new ArrayList<>();
 
 
     public Long getId() {
@@ -134,6 +140,14 @@ public class Clan {
 
     public void setCurrencyResponses(List<CurrencyResponse> currencyResponses) {
         this.currencyResponses = currencyResponses;
+    }
+
+    public List<UploadedFile> getUploadedFiles() {
+        return uploadedFiles;
+    }
+
+    public void setUploadedFiles(List<UploadedFile> uploadedFiles) {
+        this.uploadedFiles = uploadedFiles;
     }
 
     @Override
